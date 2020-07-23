@@ -1,26 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import Container from "react-bootstrap/Container";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import AppNav from "./components/AppNav";
+import HomeCards from "./components/HomeCards";
+import ArchivePage from "./components/ArchiveCards";
+import SearchPage from "./components/SearchCards"
+import "./App.css";
+
+export default class App extends React.Component {
+  render() {
+    return (
+      <div className="App">
+        <Router>
+          <AppNav />
+          <Container>
+            <Route exact path="/" component={HomeCards} />
+            <Route path={'/archive'} component={ArchivePage} />
+            <Route path={'/search'} component={SearchPage} />
+          </Container>
+        </Router>
+      </div>
+    );
+  }
 }
-
-export default App;
