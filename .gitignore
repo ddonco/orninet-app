@@ -8,9 +8,11 @@
 
 # testing
 /coverage
+*.flaskenv
 
 # production
 /build
+/api/migrations
 
 # misc
 .DS_Store
