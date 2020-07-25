@@ -8,3 +8,4 @@ class Config(object):
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     IMAGE_SRC = os.environ.get('IMAGE_SRC')
     IMAGES_PER_PAGE = 2
+    CSI_CAMERA = os.environ.get('CSI_CAMERA') or 'False'

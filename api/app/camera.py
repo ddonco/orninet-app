@@ -1,6 +1,7 @@
 import os
 import cv2
 from app.base_camera import BaseCamera
+from app import app
 
 
 def gstreamer_pipeline(
@@ -30,16 +31,16 @@ def gstreamer_pipeline(
         )
     )
 
+
 class Camera(BaseCamera):
     video_source = 0
     api_preference = cv2.CAP_ANY
 
     def __init__(self):
-        if os.environ.get('CSI_CAMERA'):
-            if os.environ.get('CSI_CAMERA') == 'True':
-                Camera.set_video_source(gstreamer_pipeline, cv2.CAP_GSTREAMER)
-            else:
-                Camera.set_video_source(0, cv2.CAP_ANY)
+        if app.config['CSI_CAMERA'] == 'True':
+            Camera.set_video_source(gstreamer_pipeline, cv2.CAP_GSTREAMER)
+        else:
+            Camera.set_video_source(0, cv2.CAP_ANY)
         super(Camera, self).__init__()
 
     @staticmethod
