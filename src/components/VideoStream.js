@@ -4,7 +4,7 @@ import Container from "react-bootstrap/Container";
 
 export default class VideoStream extends React.Component {
   state = {
-    imagePath: "http://localhost:5000/api/video_feed",
+    imagePath: "/api/video_feed",
   };
 
   componentWillUnmount() {
