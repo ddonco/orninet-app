@@ -2,7 +2,7 @@ import React from "react";
 import Alert from "react-bootstrap/Alert";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
-import CardDeck from "react-bootstrap/CardDeck";
+import CardColumns from "react-bootstrap/CardColumns";
 
 import { getHomeData } from "../utils/api";
 import ImageCard from "./ImageCard";
@@ -40,11 +40,11 @@ export default class HomeCards extends React.Component {
           <Alert variant="danger">Error retrieving data: {error}</Alert>
         )}
         <Row className="mt-2">
-          <CardDeck>
+          <CardColumns>
             {images.length > 0 &&
               error == null &&
               images.map((image) => <ImageCard key={image.id} value={image} />)}
-          </CardDeck>
+          </CardColumns>
         </Row>
       </Container>
     );

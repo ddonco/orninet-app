@@ -2,7 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 import queryString from "query-string";
 import Alert from "react-bootstrap/Alert";
-import CardDeck from "react-bootstrap/CardDeck";
+import CardColumns from "react-bootstrap/CardColumns";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Button from "react-bootstrap/Button";
@@ -81,13 +81,13 @@ export default class ArchivePage extends React.Component {
             <Alert variant="danger">Error retrieving data: {error}</Alert>
           )}
           <Row className="mt-2">
-            <CardDeck>
+            <CardColumns>
               {images.length > 0 &&
                 error == null &&
                 images.map((image) => (
                   <ImageCard key={image.id} value={image} />
                 ))}
-            </CardDeck>
+            </CardColumns>
           </Row>
           <Row className="justify-content-md-center my-3">
             {hasPrevPage && (
