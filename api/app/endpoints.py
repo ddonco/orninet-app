@@ -1,28 +1,24 @@
+import json
 import os
 import sys
-import json
 from datetime import datetime
 from flask import request
+from flask import Response
 from flask_cors import CORS
 
 from app import app, db
 from app.models import Image
 from app.schemas import ImageSchema
-
+from app.camera import VideoCamera
 
 CORS(app)
-
-
-@app.route('/api/time', methods=['GET'])
-def get_current_time():
-    return {'timestamp': datetime.now()}
 
 
 @app.route('/api/home', methods=['GET'])
 def get_home_data():
     images = Image.query.order_by(Image.timestamp.desc()).limit(6)
     image_schema = ImageSchema(many=True)
-    
+
     payload = {'payload':
         {
             'images': image_schema.dump(images, many=True),
@@ -35,10 +31,10 @@ def get_home_data():
 @app.route('/api/archive', methods=['GET'])
 def get_archive_data():
     page = request.args.get('page', 1, type=int)
-    images = Image.query.order_by(Image.timestamp.desc()).paginate(page, 
+    images = Image.query.order_by(Image.timestamp.desc()).paginate(page,
         app.config['IMAGES_PER_PAGE'], False)
     image_schema = ImageSchema(many=True)
-    
+
     payload = {'payload':
         {
             'images': image_schema.dump(images.items, many=True),
@@ -84,6 +80,7 @@ def get_search_data():
 
     return payload
 
+
 @app.route('/api/post-detection', methods=['POST'])
 def put_detection_data():
     response_msg = 'success'
@@ -97,9 +94,10 @@ def put_detection_data():
             assert 'categories' in detections, 'POST request missing required property: categories'
 
             image = Image(
-                name=detections['name'], 
-                categories=json.dumps(detections['categories']), 
-                timestamp=datetime.strptime(detections['timestamp'], '%Y-%m-%d %H:%M:%S.%f')
+                name=detections['name'],
+                categories=json.dumps(detections['categories']),
+                timestamp=datetime.strptime(
+                    detections['timestamp'], '%Y-%m-%d %H:%M:%S.%f')
             )
             db.session.add(image)
             db.session.commit()
@@ -110,3 +108,22 @@ def put_detection_data():
 
     response = {'response': response_msg}
     return response, 200
+
+
+def generate(camera):
+    # loop over frames from the output stream
+    while True:
+        # get camera frame
+        frame = camera.get_frame()
+
+        # yield the output frame in the byte format
+        yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
+            bytearray(frame) + b'\r\n')
+
+
+@app.route('/api/video_feed')
+def video_feed():
+    # return the response generated along with the specific media
+    # type (mime type)
+    return Response(generate(VideoCamera()),
+        mimetype = "multipart/x-mixed-replace; boundary=frame")

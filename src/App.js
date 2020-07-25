@@ -5,7 +5,8 @@ import Container from "react-bootstrap/Container";
 import AppNav from "./components/AppNav";
 import HomeCards from "./components/HomeCards";
 import ArchivePage from "./components/ArchiveCards";
-import SearchPage from "./components/SearchCards"
+import SearchPage from "./components/SearchCards";
+import VideoStream from "./components/VideoStream";
 import "./App.css";
 
 export default class App extends React.Component {
@@ -18,6 +19,7 @@ export default class App extends React.Component {
             <Route exact path="/" component={HomeCards} />
             <Route path={'/archive'} component={ArchivePage} />
             <Route path={'/search'} component={SearchPage} />
+            <Route path={'/stream'} component={VideoStream} />
           </Container>
         </Router>
       </div>

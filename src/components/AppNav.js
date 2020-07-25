@@ -68,6 +68,13 @@ class AppNav extends React.Component {
               >
                 Status
               </NavLink>
+              <NavLink
+                to="/stream"
+                className="nav-link"
+                activeStyle={activeStyle}
+              >
+                Stream
+              </NavLink>
             </Nav>
             <Form inline onSubmit={this.handleSubmit}>
               <FormControl
