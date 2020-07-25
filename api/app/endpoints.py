@@ -9,7 +9,7 @@ from flask_cors import CORS
 from app import app, db
 from app.models import Image
 from app.schemas import ImageSchema
-from app.camera import VideoCamera
+from app.camera import Camera
 
 CORS(app)
 
@@ -110,20 +110,16 @@ def put_detection_data():
     return response, 200
 
 
-def generate(camera):
-    # loop over frames from the output stream
+def gen(camera):
+    """Video streaming generator function."""
     while True:
-        # get camera frame
         frame = camera.get_frame()
-
-        # yield the output frame in the byte format
-        yield(b'--frame\r\n' b'Content-Type: image/jpeg\r\n\r\n' + 
-            bytearray(frame) + b'\r\n')
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
 
 @app.route('/api/video_feed')
 def video_feed():
-    # return the response generated along with the specific media
-    # type (mime type)
-    return Response(generate(VideoCamera()),
-        mimetype = "multipart/x-mixed-replace; boundary=frame")
+    """Video streaming route. Put this in the src attribute of an img tag."""
+    return Response(gen(Camera()),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')

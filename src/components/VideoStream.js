@@ -1,14 +1,24 @@
-import React from 'react';
-import Image from 'react-bootstrap/Image'
-
+import React from "react";
+import Image from "react-bootstrap/Image";
+import Container from "react-bootstrap/Container";
 
 export default class VideoStream extends React.Component {
+  state = {
+    imagePath: "http://localhost:5000/api/video_feed",
+  };
+
+  componentWillUnmount() {
+    this.setState({
+      imagePath: ""
+    })
+  }
+
   render() {
     return (
-      <React.Fragment>
-        <h2>Live Feed</h2>
-        <Image src="http://localhost:5000/api/video_feed" fluid />
-      </React.Fragment>
-    )
+      <Container className="text-center">
+        <h3>Live Feed</h3>
+        <Image src={this.state.imagePath} fluid />
+      </Container>
+    );
   }
 }

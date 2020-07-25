@@ -7,8 +7,6 @@ import CardColumns from "react-bootstrap/CardColumns";
 import { getHomeData } from "../utils/api";
 import ImageCard from "./ImageCard";
 
-const images = require.context("../../images", true);
-
 export default class HomeCards extends React.Component {
   state = {
     images: [],
