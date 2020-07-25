@@ -38,7 +38,7 @@ class Camera(BaseCamera):
 
     def __init__(self):
         if app.config['CSI_CAMERA'] == 'True':
-            Camera.set_video_source(gstreamer_pipeline, cv2.CAP_GSTREAMER)
+            Camera.set_video_source(gstreamer_pipeline(), cv2.CAP_GSTREAMER)
         else:
             Camera.set_video_source(0, cv2.CAP_ANY)
         super(Camera, self).__init__()
