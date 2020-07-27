@@ -13,6 +13,10 @@ from app.camera import Camera
 
 CORS(app)
 
+if app.config['JETSON_PLATFORM'] == 'True':
+    from pystemd.systemd1 import Unit
+    yolov3_unit = Unit(b'orninet-yolov3.service')
+    yolov3_unit.load()
 
 @app.route('/api/home', methods=['GET'])
 def get_home_data():
@@ -106,8 +110,8 @@ def put_detection_data():
             print(f"Decection POST request error:\n{err}")
             response_msg = err
 
-    response = {'response': response_msg}
-    return response, 200
+    resp = {'response': response_msg}
+    return resp, 200
 
 
 def gen(camera):
@@ -123,3 +127,30 @@ def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
     return Response(gen(Camera()),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/api/start_yolov3', methods=['GET'])
+def start_yolov3():
+    """Start orninet-yolov3 systemd service"""
+    global yolov3_unit
+    if yolov3_unit.Unit.ActiveState == b'inactive':
+        yolov3_unit.Unit.Start(b'replace')
+
+    resp = {'status': yolov3_unit.Unit.ActiveState}
+    return resp
+
+
+@app.route('/api/stop_yolov3', methods=['GET'])
+def stop_yolov3():
+    global yolov3_unit
+    if yolov3_unit.Unit.ActiveState == b'active':
+        yolov3_unit.Unit.Stop(b'replace')
+    
+    resp = {'status': yolov3_unit.Unit.ActiveState}
+    return resp
+
+@app.route('/api/yolov3_status', methods=['GET'])
+def get_yolov3_status():
+    global yolov3_unit
+    resp = {'status': yolov3_unit.Unit.ActiveState}
+    return resp

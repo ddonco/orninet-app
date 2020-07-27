@@ -9,3 +9,4 @@ class Config(object):
     IMAGE_SRC = os.environ.get('IMAGE_SRC')
     IMAGES_PER_PAGE = 2
     CSI_CAMERA = os.environ.get('CSI_CAMERA') or 'False'
+    JETSON_PLATFORM = os.environ.get('JETSON_PLATFORM') or 'False'
