@@ -37,7 +37,7 @@ export default class SearchPage extends React.Component {
   componentDidUpdate() {
     const { query, page } = queryString.parse(this.props.location.search);
 
-    if (query != this.state.query) {
+    if (query !== this.state.query) {
       getSearchData(query, page).then((data) => {
         this.setState({
           query: query,

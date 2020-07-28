@@ -37,7 +37,7 @@ export default class ArchivePage extends React.Component {
   componentDidUpdate() {
     const { page } = queryString.parse(this.props.location.search);
 
-    if (page != this.state.page) {
+    if (page !== this.state.page) {
       getArchiveData(page).then((data) => {
         this.setState({
           page: page,
