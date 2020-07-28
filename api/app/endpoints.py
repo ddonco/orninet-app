@@ -13,6 +13,8 @@ from app.camera import Camera
 
 CORS(app)
 
+dbus = None
+yolov3_unit = None
 if app.config['JETSON_PLATFORM'] == 'True':
     from pystemd.systemd1 import Unit
     from pystemd.dbuslib import DBus
