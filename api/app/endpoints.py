@@ -15,8 +15,13 @@ CORS(app)
 
 if app.config['JETSON_PLATFORM'] == 'True':
     from pystemd.systemd1 import Unit
-    yolov3_unit = Unit(b'orninet-yolov3.service')
-    yolov3_unit.load()
+    from pystemd.dbuslib import DBus
+
+    dbus = DBus(user_mode=True)
+    dbus.open()
+
+    yolov3_unit = Unit(b'orninet-yolov3.service', bus=dbus, _autoload=True)
+
 
 @app.route('/api/home', methods=['GET'])
 def get_home_data():
