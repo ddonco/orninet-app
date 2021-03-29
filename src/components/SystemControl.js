@@ -4,9 +4,9 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 
 import {
-  getYolov3Status,
-  startYolov3Status,
-  stopYolov3Status,
+  getYoloStatus,
+  startYoloStatus,
+  stopYoloStatus,
 } from "../utils/api.js";
 
 const activeStyle = {
@@ -19,7 +19,7 @@ const inactiveStyle = {
 
 export default class SystemControl extends React.Component {
   state = {
-    yolov3Status: "inactive",
+    yoloStatus: "inactive",
     showModal: false,
     error: null,
   };
@@ -37,16 +37,16 @@ export default class SystemControl extends React.Component {
   };
 
   handleServiceControl = () => {
-    if (this.state.yolov3Status === "inactive") {
-      startYolov3Status().then((data) => {
+    if (this.state.yoloStatus === "inactive") {
+      startYoloStatus().then((data) => {
         this.setState({
-          yolov3Status: data.status,
+          yoloStatus: data.status,
         });
       });
     } else {
-      stopYolov3Status().then((data) => {
+      stopYoloStatus().then((data) => {
         this.setState({
-          yolov3Status: data.status,
+          yoloStatus: data.status,
         });
       });
     }
@@ -57,9 +57,9 @@ export default class SystemControl extends React.Component {
 
   componentDidMount() {
     try {
-      getYolov3Status().then((data) => {
+      getYoloStatus().then((data) => {
         this.setState({
-          yolov3Status: data.status,
+          yoloStatus: data.status,
         });
       });
     } catch (error) {
@@ -70,7 +70,7 @@ export default class SystemControl extends React.Component {
   }
 
   render() {
-    console.log(this.state.yolov3Status);
+    console.log(this.state.yoloStatus);
 
     return (
       <Container className="text-center">
@@ -78,12 +78,12 @@ export default class SystemControl extends React.Component {
           OrniNet Status:
           <span
             style={
-              this.state.yolov3Status === "inactive"
+              this.state.yoloStatus === "inactive"
                 ? inactiveStyle
                 : activeStyle
             }
           >
-            {` ${this.state.yolov3Status}`}
+            {` ${this.state.yoloStatus}`}
           </span>
         </h3>
         <Button
@@ -91,7 +91,7 @@ export default class SystemControl extends React.Component {
           variant="primary"
           onClick={this.handleModelShow}
         >
-          {this.state.yolov3Status === "inactive"
+          {this.state.yoloStatus === "inactive"
             ? "Start Service"
             : "Stop Service"}
         </Button>
@@ -103,12 +103,12 @@ export default class SystemControl extends React.Component {
           animation={false}
         >
           <Modal.Header closeButton>
-            <Modal.Title>YoloV3 Service</Modal.Title>
+            <Modal.Title>Yolo Object Detection Service</Modal.Title>
           </Modal.Header>
           <Modal.Body>
-            {this.state.yolov3Status === "inactive"
-              ? "Start YoloV3 Service?"
-              : "Stop YoloV3 Service?"}
+            {this.state.yoloStatus === "inactive"
+              ? "Start Yolo Object Detection Service?"
+              : "Stop Yolo Object Detection Service?"}
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={this.handleModelClose}>
@@ -118,7 +118,7 @@ export default class SystemControl extends React.Component {
               variant="primary"
               onClick={() => this.handleServiceControl()}
             >
-              {this.state.yolov3Status === "inactive" ? "Start" : "Stop"}
+              {this.state.yoloStatus === "inactive" ? "Start" : "Stop"}
             </Button>
           </Modal.Footer>
         </Modal>

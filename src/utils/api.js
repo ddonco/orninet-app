@@ -34,8 +34,8 @@ export function getSearchData(query, page) {
   });
 }
 
-export function getYolov3Status() {
-  return fetch("/api/yolov3_status")
+export function getYoloStatus() {
+  return fetch("/api/yolo_status")
     .then((res) => res.json())
     .then((result) => {
       if (result.message) {
@@ -46,8 +46,8 @@ export function getYolov3Status() {
     });
 }
 
-export function startYolov3Status() {
-  return fetch("/api/start_yolov3")
+export function startYoloStatus() {
+  return fetch("/api/start_yolo")
     .then((res) => res.json())
     .then((result) => {
       if (result.message) {
@@ -58,8 +58,8 @@ export function startYolov3Status() {
     });
 }
 
-export function stopYolov3Status() {
-  return fetch("/api/stop_yolov3")
+export function stopYoloStatus() {
+  return fetch("/api/stop_yolo")
     .then((res) => res.json())
     .then((result) => {
       if (result.message) {

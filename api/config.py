@@ -10,3 +10,4 @@ class Config(object):
     IMAGES_PER_PAGE = 2
     CSI_CAMERA = os.environ.get('CSI_CAMERA') or 'False'
     JETSON_PLATFORM = os.environ.get('JETSON_PLATFORM') or 'False'
+    YOLO_VERSION = os.environ.get('YOLO_VERSION')

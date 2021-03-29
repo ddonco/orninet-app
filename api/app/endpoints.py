@@ -14,7 +14,8 @@ from app.camera import Camera
 CORS(app)
 
 dbus = None
-yolov3_unit = None
+yolo_unit = None
+yolo_version = app.config['YOLO_VERSION']
 if app.config['JETSON_PLATFORM'] == 'True':
     from pystemd.systemd1 import Unit
     from pystemd.dbuslib import DBus
@@ -22,7 +23,8 @@ if app.config['JETSON_PLATFORM'] == 'True':
     dbus = DBus(user_mode=True)
     dbus.open()
 
-    yolov3_unit = Unit(b'orninet-yolov3.service', bus=dbus, _autoload=True)
+    # yolo_unit = Unit(b'orninet-yolov5.service', bus=dbus, _autoload=True)
+    yolo_unit = Unit(bytes(f'orninet-yolov{yolo_version}.service', 'utf-8'), bus=dbus, _autoload=True)
 
 
 @app.route('/api/home', methods=['GET'])
@@ -136,28 +138,28 @@ def video_feed():
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
-@app.route('/api/start_yolov3', methods=['GET'])
-def start_yolov3():
-    """Start orninet-yolov3 systemd service"""
-    global yolov3_unit
-    if yolov3_unit.Unit.ActiveState == b'inactive':
-        yolov3_unit.Unit.Start(b'replace')
+@app.route('/api/start_yolo', methods=['GET'])
+def start_yolo():
+    """Start orninet-yolo systemd service"""
+    global yolo_unit
+    if yolo_unit.Unit.ActiveState == b'inactive':
+        yolo_unit.Unit.Start(b'replace')
 
-    resp = {'status': yolov3_unit.Unit.ActiveState}
+    resp = {'status': yolo_unit.Unit.ActiveState}
     return resp
 
 
-@app.route('/api/stop_yolov3', methods=['GET'])
-def stop_yolov3():
-    global yolov3_unit
-    if yolov3_unit.Unit.ActiveState == b'active':
-        yolov3_unit.Unit.Stop(b'replace')
+@app.route('/api/stop_yolo', methods=['GET'])
+def stop_yolo():
+    global yolo_unit
+    if yolo_unit.Unit.ActiveState == b'active':
+        yolo_unit.Unit.Stop(b'replace')
     
-    resp = {'status': yolov3_unit.Unit.ActiveState}
+    resp = {'status': yolo_unit.Unit.ActiveState}
     return resp
 
-@app.route('/api/yolov3_status', methods=['GET'])
-def get_yolov3_status():
-    global yolov3_unit
-    resp = {'status': yolov3_unit.Unit.ActiveState}
+@app.route('/api/yolo_status', methods=['GET'])
+def get_yolo_status():
+    global yolo_unit
+    resp = {'status': yolo_unit.Unit.ActiveState}
     return resp

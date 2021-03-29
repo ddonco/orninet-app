@@ -5,19 +5,19 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Alert from "react-bootstrap/Alert";
 
-import { getYolov3Status } from "../utils/api.js";
+import { getYoloStatus } from "../utils/api.js";
 
 export default class VideoStream extends React.Component {
   state = {
     imagePath: "/api/video_feed",
-    yolov3Status: "active",
+    yoloStatus: "active",
   };
 
   componentDidMount() {
     try {
-      getYolov3Status().then((data) => {
+      getYoloStatus().then((data) => {
         this.setState({
-          yolov3Status: data.status,
+          yoloStatus: data.status,
         });
       });
     } catch (error) {
@@ -34,17 +34,17 @@ export default class VideoStream extends React.Component {
   }
 
   render() {
-    const { imagePath, yolov3Status } = this.state;
+    const { imagePath, yoloStatus } = this.state;
 
     return (
       <Container className="text-center">
         <h3>Live Feed</h3>
-        {yolov3Status === "inactive" ? (
+        {yoloStatus === "inactive" ? (
           <Image src={imagePath} fluid />
         ) : (
           <Row>
             <Col md={{ span: 6, offset: 3 }}>
-              <Alert variant="secondary">Camera in use by YoloV3 service.</Alert>
+              <Alert variant="secondary">Camera in use by Yolo Object Detection service.</Alert>
             </Col>
           </Row>
         )}
