@@ -6,3 +6,7 @@ Flask-Migrate
 Flask-SQLAlchemy
 flask-marshmallow
 marshmallow-sqlalchemy
+
+# pystemd - Clone repo and build from source.
+# Likely need to first run 'sudo apt-get install libsystemd-dev'
+# Then check that 'pkg-config --cflags --libs libsystemd' returns 'lsystemd'
