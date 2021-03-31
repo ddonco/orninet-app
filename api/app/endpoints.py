@@ -23,8 +23,8 @@ if app.config['JETSON_PLATFORM'] == 'True':
     dbus = DBus(user_mode=True)
     dbus.open()
 
-    # yolo_unit = Unit(b'orninet-yolov5.service', bus=dbus, _autoload=True)
-    yolo_unit = Unit(bytes(f'orninet-yolov{yolo_version}.service', 'utf-8'), bus=dbus, _autoload=True)
+    yolo_unit = Unit(b'orninet-yolov5.service', bus=dbus, _autoload=True)
+    # yolo_unit = Unit(bytes(f'orninet-yolov{yolo_version}.service', 'utf-8'), bus=dbus, _autoload=True)
 
 
 @app.route('/api/home', methods=['GET'])
