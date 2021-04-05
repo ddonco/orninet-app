@@ -40,11 +40,14 @@ def gstreamer_pipeline2(
     flip_method=2,
 ):
     return (
-        "nvarguscamerasrc ! video/x-raw(memory:NVMM), width=%d, "
-        "height=%d, framerate=%d/1, format=NV12 ! nvvidconv flip-method=%d ! "
-        "video/x-raw, format=BGRx, width=%d, height=%d ! "
-        "videoconvert ! video/x-raw, format=BGR ! appsink "
-        "wait-on-eos=false drop=true max-buffers=60 -e -vvv"
+        "nvarguscamerasrc ! "
+        "video/x-raw(memory:NVMM), "
+        "width=(int)%d, height=(int)%d, "
+        "format=(string)NV12, framerate=(fraction)%d/1 ! "
+        "nvvidconv flip-method=%d ! "
+        "video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! "
+        "videoconvert ! "
+        "video/x-raw, format=(string)BGR ! appsink wait-on-eos=false drop=true max-buffers=3 -e"
         % (
             capture_width,
             capture_height,
