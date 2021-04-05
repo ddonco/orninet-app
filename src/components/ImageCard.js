@@ -6,6 +6,7 @@ const images = require.context("../../images", true);
 export default function ImageCard(image) {
   const imageCategories = JSON.parse(image.value.categories);
   const date = new Date(image.value.timestamp);
+  console.log(date);
   var hours = date.getHours();
   var minutes = date.getMinutes();
   var seconds = date.getSeconds();
