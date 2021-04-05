@@ -7,8 +7,8 @@ from app import app
 def gstreamer_pipeline(
     capture_width=1920,
     capture_height=1080,
-    display_width=608,
-    display_height=342,
+    display_width=640,
+    display_height=360,
     framerate=30,
     flip_method=2,
 ):
@@ -30,6 +30,29 @@ def gstreamer_pipeline(
             display_height,
         )
     )
+
+    # Pipeline worth trying:
+    # "nvarguscamerasrc ! video/x-raw(memory:NVMM), width=1280, "
+    #                                    "height=720, framerate=30/1, format=NV12 ! nvvidconv ! "
+    #                                    "video/x-raw, format=BGRx, width=640, height=360 ! "
+    #                                    "videoconvert ! video/x-raw, format=BGR ! appsink "
+    #                                    "wait-on-eos=false drop=true max-buffers=60 -e -vvv"
+
+    # And another:
+    # "nvarguscamerasrc sensor-id=0 ! " 
+    # "video/x-raw(memory:NVMM), width=(int)3280, height=(int)2464 ! " 
+    # "nvvidconv flip-method=0 ! "
+    # "video/x-raw, format=(string)I420 ! "
+    # "xvimagesink -e"
+
+    # One more:
+    # 'nvarguscamerasrc ! '
+    # 'video/x-raw(memory:NVMM), format=NV12, '
+    # 'width=3280, height=2464, '
+    # 'framerate=10/1 ! '
+    # 'nvvidconv flip-method=2 ! '
+    # 'video/x-raw, format=I420 ! '
+    # 'appsink max-buffers=1 drop=True '
 
 
 class Camera(BaseCamera):
