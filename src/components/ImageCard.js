@@ -6,6 +6,13 @@ const images = require.context("../../images", true);
 export default function ImageCard(image) {
   const imageCategories = JSON.parse(image.value.categories);
   const date = new Date(image.value.timestamp);
+  var hours = date.getHours();
+  var minutes = date.getMinutes();
+  var seconds = date.getSeconds();
+
+  hours = hours < 10 ? '0' + hours : hours;
+  minutes = minutes < 10 ? '0' + minutes : minutes;
+  seconds = seconds < 10 ? '0' + seconds : seconds;
 
   return (
     <Card key={image.value.id} style={{ width: '20rem' }}>
@@ -20,7 +27,7 @@ export default function ImageCard(image) {
         </Card.Text>
       </Card.Body>
       <Card.Footer>
-        <small className="text-muted">{`${date.getMonth()}/${date.getDay()}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`}</small>
+        <small className="text-muted">{`${date.getMonth()}/${date.getDay()}/${date.getFullYear()} ${hours}:${minutes}:${seconds}`}</small>
       </Card.Footer>
     </Card>
   );
