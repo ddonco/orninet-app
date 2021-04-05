@@ -47,7 +47,7 @@ def gstreamer_pipeline2(
         "nvvidconv flip-method=%d ! "
         "video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! "
         "videoconvert ! "
-        "video/x-raw, format=(string)BGR ! appsink wait-on-eos=false drop=true max-buffers=3 -e"
+        "video/x-raw, format=(string)BGR ! appsink wait-on-eos=false drop=true max-buffers=3"
         % (
             capture_width,
             capture_height,
