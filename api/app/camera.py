@@ -31,6 +31,30 @@ def gstreamer_pipeline(
         )
     )
 
+def gstreamer_pipeline2(
+    capture_width=1920,
+    capture_height=1080,
+    display_width=640,
+    display_height=360,
+    framerate=30,
+    flip_method=2,
+):
+    return (
+        "nvarguscamerasrc ! video/x-raw(memory:NVMM), width=%d, "
+        "height=%d, framerate=%d/1, format=NV12 ! nvvidconv flip-method=%d ! "
+        "video/x-raw, format=BGRx, width=%d, height=%d ! "
+        "videoconvert ! video/x-raw, format=BGR ! appsink "
+        "wait-on-eos=false drop=true max-buffers=60 -e -vvv"
+        % (
+            capture_width,
+            capture_height,
+            framerate,
+            flip_method,
+            display_width,
+            display_height,
+        )
+    )
+
     # Pipeline worth trying:
     # "nvarguscamerasrc ! video/x-raw(memory:NVMM), width=1280, "
     #                                    "height=720, framerate=30/1, format=NV12 ! nvvidconv ! "
@@ -38,12 +62,62 @@ def gstreamer_pipeline(
     #                                    "videoconvert ! video/x-raw, format=BGR ! appsink "
     #                                    "wait-on-eos=false drop=true max-buffers=60 -e -vvv"
 
+def gstreamer_pipeline3(
+    capture_width=1920,
+    capture_height=1080,
+    display_width=640,
+    display_height=360,
+    framerate=30,
+    flip_method=2,
+):
+    return (
+        "nvarguscamerasrc sensor-id=0 ! " 
+        "video/x-raw(memory:NVMM), width=(int)%d, height=(int)%d, framerate=%d/1 ! " 
+        "nvvidconv flip-method=%d ! "
+        "video/x-raw, format=(string)I420, width=%d, height=%d ! "
+        "xvimagesink -e"
+        % (
+            capture_width,
+            capture_height,
+            framerate,
+            flip_method,
+            display_width,
+            display_height,
+        )
+    )
+
     # And another:
     # "nvarguscamerasrc sensor-id=0 ! " 
     # "video/x-raw(memory:NVMM), width=(int)3280, height=(int)2464 ! " 
     # "nvvidconv flip-method=0 ! "
     # "video/x-raw, format=(string)I420 ! "
     # "xvimagesink -e"
+
+def gstreamer_pipeline4(
+    capture_width=1920,
+    capture_height=1080,
+    display_width=640,
+    display_height=360,
+    framerate=30,
+    flip_method=2,
+):
+    return (
+        'nvarguscamerasrc ! '
+        'video/x-raw(memory:NVMM), format=NV12, '
+        'width=%d, height=%d, '
+        'framerate=%d/1 ! '
+        'nvvidconv flip-method=%d ! '
+        'video/x-raw, format=I420, width=%d, height=%d ! '
+        'appsink max-buffers=1 drop=True'
+        % (
+            capture_width,
+            capture_height,
+            framerate,
+            flip_method,
+            display_width,
+            display_height,
+        )
+    )
 
     # One more:
     # 'nvarguscamerasrc ! '
@@ -61,7 +135,7 @@ class Camera(BaseCamera):
 
     def __init__(self):
         if app.config['CSI_CAMERA'] == 'True':
-            Camera.set_video_source(gstreamer_pipeline(), cv2.CAP_GSTREAMER)
+            Camera.set_video_source(gstreamer_pipeline2(), cv2.CAP_GSTREAMER)
         else:
             Camera.set_video_source(0, cv2.CAP_ANY)
         super(Camera, self).__init__()
