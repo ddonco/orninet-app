@@ -15,6 +15,7 @@ CORS(app)
 
 dbus = None
 yolo_unit = None
+camera = None
 yolo_version = app.config['YOLO_VERSION']
 if app.config['JETSON_PLATFORM'] == 'True':
     from pystemd.systemd1 import Unit
@@ -134,9 +135,15 @@ def gen(camera):
 @app.route('/api/video_feed')
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
-    return Response(gen(Camera()),
+    camera = Camera()
+    return Response(gen(camera),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
 
+@app.route('/api/video_stop')
+def video_stop():
+    """Video stream stop route."""
+    camera.stop_camera()
+    return ''
 
 @app.route('/api/start_yolo', methods=['GET'])
 def start_yolo():
