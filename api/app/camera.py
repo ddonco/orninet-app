@@ -47,7 +47,7 @@ def gstreamer_pipeline2(
         "nvvidconv flip-method=%d ! "
         "video/x-raw, width=(int)%d, height=(int)%d, format=(string)BGRx ! "
         "videoconvert ! "
-        "video/x-raw, format=(string)BGR ! appsink wait-on-eos=false drop=true max-buffers=3"
+        "video/x-raw, format=(string)BGR ! appsink wait-on-eos=false drop=true max-buffers=1"
         % (
             capture_width,
             capture_height,
@@ -138,7 +138,7 @@ class Camera(BaseCamera):
 
     def __init__(self):
         if app.config['CSI_CAMERA'] == 'True':
-            Camera.set_video_source(gstreamer_pipeline3(), cv2.CAP_GSTREAMER)
+            Camera.set_video_source(gstreamer_pipeline2(), cv2.CAP_GSTREAMER)
         else:
             Camera.set_video_source(0, cv2.CAP_ANY)
         super(Camera, self).__init__()
