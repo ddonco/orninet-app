@@ -15,7 +15,7 @@ CORS(app)
 
 dbus = None
 yolo_unit = None
-camera = None
+global camera
 yolo_version = app.config['YOLO_VERSION']
 if app.config['JETSON_PLATFORM'] == 'True':
     from pystemd.systemd1 import Unit
@@ -26,6 +26,19 @@ if app.config['JETSON_PLATFORM'] == 'True':
 
     yolo_unit = Unit(b'orninet-yolov5.service', bus=dbus, _autoload=True)
     # yolo_unit = Unit(bytes(f'orninet-yolov{yolo_version}.service', 'utf-8'), bus=dbus, _autoload=True)
+
+else:
+    class PlaceholderUnit(object):
+
+        def __init__(self):
+            self.ActiveState = 'inactive'
+
+    class PlaceholderYoloUnit(object):
+
+        def __init__(self):
+            self.Unit = PlaceholderUnit()
+
+    yolo_unit = PlaceholderYoloUnit()
 
 
 @app.route('/api/home', methods=['GET'])
@@ -135,6 +148,7 @@ def gen(camera):
 @app.route('/api/video_feed')
 def video_feed():
     """Video streaming route. Put this in the src attribute of an img tag."""
+    global camera
     camera = Camera()
     return Response(gen(camera),
                     mimetype='multipart/x-mixed-replace; boundary=frame')
@@ -142,7 +156,8 @@ def video_feed():
 @app.route('/api/video_stop')
 def video_stop():
     """Video stream stop route."""
-    camera.stop_camera()
+    global camera
+    camera.close_camera()
     return ''
 
 @app.route('/api/start_yolo', methods=['GET'])

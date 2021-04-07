@@ -69,3 +69,15 @@ export function stopYoloStatus() {
       return result;
     });
 }
+
+export function closeVideoStream() {
+  return fetch("/api/video_stop")
+    .then((res) => res.json())
+    .then((result) => {
+      if (result.message) {
+        throw new Error("No video stream available.")
+      }
+
+      return result;
+    });
+}
