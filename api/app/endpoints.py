@@ -15,7 +15,7 @@ CORS(app)
 
 dbus = None
 yolo_unit = None
-global camera
+camera = None
 yolo_version = app.config['YOLO_VERSION']
 if app.config['JETSON_PLATFORM'] == 'True':
     from pystemd.systemd1 import Unit

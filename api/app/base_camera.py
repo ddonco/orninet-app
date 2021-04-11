@@ -1,5 +1,6 @@
 import time
 import threading
+from queue import Queue
 try:
     from greenlet import getcurrent as get_ident
 except ImportError:
@@ -57,19 +58,32 @@ class BaseCamera(object):
     last_access = 0  # time of last client access to the camera
     stop_camera = False
     event = CameraEvent()
+    
 
     def __init__(self):
         """Start the background camera thread if it isn't running yet."""
+        # self.stop_camera = False
+        # self.q = Queue()
+        # self.q = False
+
         if BaseCamera.thread is None:
             BaseCamera.last_access = time.time()
+            BaseCamera.stop_camera = False
 
             # start background frame thread
+            # BaseCamera.thread = threading.Thread(target=self._thread, args =(self.q, ))
             BaseCamera.thread = threading.Thread(target=self._thread)
             BaseCamera.thread.start()
 
             # wait until frames are available
             while self.get_frame() is None:
                 time.sleep(0)
+
+    def close_camera(self):
+        # self.stop_camera = True
+        BaseCamera.stop_camera = True
+        print(f'stop_camera: {BaseCamera.stop_camera}')
+        # self.q.put(self.stop_camera)
 
     def get_frame(self):
         """Return the current camera frame."""
@@ -78,6 +92,8 @@ class BaseCamera(object):
         # wait for a signal from the camera thread
         BaseCamera.event.wait()
         BaseCamera.event.clear()
+
+        # print(f'BaseCamera stop_camera: {self.stop_camera}')
 
         return BaseCamera.frame
 
@@ -94,12 +110,17 @@ class BaseCamera(object):
         for frame in frames_iterator:
             BaseCamera.frame = frame
             BaseCamera.event.set()  # send signal to clients
+            # stop_camera = in_q.get()
+            # stop_camera = in_q
             time.sleep(0)
+
+            print(f'BaseCamera thread, stop_camera: {BaseCamera.stop_camera}')
 
             # if there hasn't been any clients asking for frames in
             # the last 10 seconds then stop the thread
-            if time.time() - BaseCamera.last_access > 10 or BaseCamera.stop_camera:
+            if (time.time() - BaseCamera.last_access > 10) or BaseCamera.stop_camera:
                 frames_iterator.close()
-                print('Stopping camera thread due to inactivity.')
+                print('Stopping camera thread.')
                 break
+
         BaseCamera.thread = None

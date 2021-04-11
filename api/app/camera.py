@@ -160,6 +160,3 @@ class Camera(BaseCamera):
 
             # encode as a jpeg image and return it
             yield cv2.imencode('.jpg', img)[1].tobytes()
-
-    def close_camera(self):
-        self.stop_camera = True
