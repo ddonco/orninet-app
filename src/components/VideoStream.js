@@ -59,7 +59,7 @@ export default class VideoStream extends React.Component {
           <Fragment>
             {showVideo ? (
               <Fragment>
-                <Row>
+                <Row className="mb-3">
                   <Col>
                   <Image className="mb-3" src={imagePath} fluid />
                   </Col>
