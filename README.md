@@ -3,10 +3,9 @@
 A React-Flask application that displays the images captured by the yolo object detection model. The app offers a preview of the camera feed via a live stream option. The yolo model service can be started and stopped from this webpage.
 
 [//]: # (Image References)
-
-[home_page]: images/home_page.png "App Home Page"
-[service_page]: images/service_start.png "Service Control Page"
-[stream_page]: images/live_stream.png "Live Stream Page"
+[home_page]: ./examples/home_page.png "App Home Page"
+[service_page]: ./examples/service_start.png "Service Control Page"
+[stream_page]: ./examples/live_stream.png "Live Stream Page"
 
 ### Home Page
 
