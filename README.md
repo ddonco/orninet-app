@@ -1,8 +1,26 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
-## Available Scripts
+# Orninet Webpage
+A React-Flask application that displays the images captured by the yolo object detection model. The app offers a preview of the camera feed via a live stream option. The yolo model service can be started and stopped from this webpage.
 
-In the project directory, you can run:
+[//]: # (Image References)
+
+[home_page]: ./images/home_page.png "App Home Page"
+[service_page]: ./images/service_start.png "Service Control Page"
+[stream_page]: ./images/live_stream.png "Live Stream Page"
+
+### Home Page
+
+![alt text][home_page]
+
+### Yolo Model Service Control Page
+
+![alt text][service_page]
+
+### Camera Live Stream Page
+
+![alt text][stream_page]
+
+## Project Scripts
 
 ### `yarn start`
 
@@ -36,33 +54,3 @@ If you aren’t satisfied with the build tool and configuration choices, you can
 Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
 
 You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/code-splitting
-
-### Analyzing the Bundle Size
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size
-
-### Making a Progressive Web App
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app
-
-### Advanced Configuration
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/advanced-configuration
-
-### Deployment
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/deployment
-
-### `yarn build` fails to minify
-
-This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
